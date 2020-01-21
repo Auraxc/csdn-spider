@@ -35,13 +35,28 @@ def get_page(url, filename):
             return page
 
 
+def create_folder(folder):
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+
 def save_md(page, name):
     e = Pq(page)
-    md = str(e(".blog-content-box .htmledit_views"))
-    file_name = "{}.md"
-    if not os.path.exists(name):
-        with open(file_name.format(name), 'w', encoding="UTF8") as f:
-            f.write(md)
+    md = e(".blog-content-box .htmledit_views")
+    pic = md("img")
+
+    for p in pic.items():
+        pic_path = p.attr("src")
+        print(pic_path)
+        # TODO: 图片下载和地址替换
+
+    folder = "md"
+    create_folder(folder)
+    filename = "{}.md".format(name)
+    path = os.path.join(folder, filename)
+    if not os.path.exists(path):
+        with open(path, 'w', encoding="UTF8") as f:
+            f.write(str(md))
 
 
 def cached_page(url):
@@ -74,7 +89,7 @@ def main():
     # url = "https://blog.csdn.net/whatday/article/details/103953281"
     for i in range(1, 56):
         url = "https://blog.csdn.net/whatday/article/list/{}".format(i)
-    # url = "https://blog.csdn.net/whatday/article/list/1"
+        # url = "https://blog.csdn.net/whatday/article/list/1"
         cached_page(url)
         print("第{}页".format(i))
 
