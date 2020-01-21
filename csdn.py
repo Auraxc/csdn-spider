@@ -49,6 +49,7 @@ def save_md(page, name):
         pic_path = p.attr("src")
         print(pic_path)
         # TODO: 图片下载和地址替换
+        ###
 
     folder = "md"
     create_folder(folder)
