@@ -1,5 +1,5 @@
 import os
-
+import config
 import requests
 from pyquery import PyQuery as Pq
 
@@ -10,9 +10,9 @@ def get_page(url, filename):
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                       "Chrome/79.0.3945.117 Safari/537.36 ",
-        "Referer": "https://blog.csdn.net/whatday/article/list/1"
+        "Referer": "https://blog.csdn.net/"
     }
-    folder = 'cached'
+    folder = config.cached
     # 建立 cached 文件夹
     if not os.path.exists(folder):
         os.makedirs(folder)
@@ -51,7 +51,7 @@ def save_md(page, name):
         # TODO: 图片下载和地址替换
         ###
 
-    folder = "md"
+    folder = config.md_folder
     create_folder(folder)
     filename = "{}.md".format(name)
     path = os.path.join(folder, filename)
@@ -76,7 +76,7 @@ def cached_page(url):
         v = str(i("h4")("a").text())
         page_dic[k] = v
     for p in page_dic.items():
-        url = "https://blog.csdn.net/whatday/article/details/{}".format(p[0])
+        url = "https://blog.csdn.net/{}/article/details/{}".format(config.author, p[0])
         print(p[0], p[1])
         page = get_page(url, "{}.html".format(p[0]))
         save_md(page, p[0])
@@ -89,8 +89,7 @@ def main():
     # git test..
     # url = "https://blog.csdn.net/whatday/article/details/103953281"
     for i in range(1, 56):
-        url = "https://blog.csdn.net/whatday/article/list/{}".format(i)
-        # url = "https://blog.csdn.net/whatday/article/list/1"
+        url = "https://blog.csdn.net/{}/article/list/{}".format(config.author, i)
         cached_page(url)
         print("第{}页".format(i))
 
